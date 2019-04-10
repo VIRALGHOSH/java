@@ -23,16 +23,20 @@ public class Program1 {
             String url = "jdbc:mysql://localhost:3306/shopping_database";
             Connection con = DriverManager.getConnection(url, "root", "");
             Statement cmd = con.createStatement();
-            String query = "select  a.item_name, a.item_price ,b.cart_quantity ,a.item_price* b.cart_quantity as Total from items as a join cart as b on a.item_id = b.item_id";
+            String query = "select  ctrg.ctrg_name,i.item_name, i.item_price ,c.cart_quantity ,i.item_price* c.cart_quantity as Total \n" +
+                    "from ((items as i \n" +
+                    "inner join cart as c on i.item_id = c.item_id)\n" +
+                    "inner join category as ctrg on i.ctrg_id = ctrg.ctrg_id)\n";
             int totalbill = 0;
             ResultSet rs = cmd.executeQuery(query);
             while(rs.next()){
-                String name = rs.getString(1);
-                String price = rs.getString(2);
-                String quantity = rs.getString(3);
-                String total = rs.getString(4);
+                String ctrg = rs.getString(1);
+                String name = rs.getString(2);
+                String price = rs.getString(3);
+                String quantity = rs.getString(4);
+                String total = rs.getString(5);
                 totalbill = totalbill+ Integer.parseInt(total);
-                System.out.println( name+"  "+ price+"  "+quantity+"  "+total);
+                System.out.println(ctrg+"  "+ name+"  "+ price+"  "+quantity+"  "+total);
             }
                 System.out.println("Total Bill:-  "+totalbill);            
             con.close();
