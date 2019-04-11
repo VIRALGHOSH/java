@@ -5,101 +5,68 @@
  */
 package API;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-class ConsumeData
-{
-    HttpURLConnection connection=null;
-    
-    void createConnection(String method)
-    {
-        try
-        {
-              URL url=new URL("https://reqres.in/api/users?per_page=10");
-              
-              connection=(HttpURLConnection) url.openConnection();
-              
-              //important properties to set
-              connection.setConnectTimeout(5000);
-              
-              //compulsary properties
-              connection.setRequestMethod(method);  //default is GET
-              
-              connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-              connection.setRequestProperty("Content-Type","application/json; charset=UTF-8");
-              connection.setRequestProperty("Accept", "application/json");//only accept data which is in json form
-              
-        }catch(IOException ex)
-        {
-            System.err.println("Exception : " + ex.getMessage());
+class consumedata{
+    HttpURLConnection con = null;
+        void createconnection(String link,String method){
+            try {
+                URL url = new URL(link);
+                con = (HttpURLConnection) url.openConnection();
+                //important properties to set
+                con.setConnectTimeout(1000);
+                //compulsary properties
+                con.setRequestMethod(method);
+                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                con.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                con.setRequestProperty("Accept", "application/json");
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         }
-    }
-    
-    void getHeaderInformation() //meta data of response thast service gave to me
-    {
-        Map<String, List<String>> headerFields = connection.getHeaderFields();
-        for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
-            String key = entry.getKey();
-            List<String> value = entry.getValue();
-            System.out.println(key + " : " + value);
+        //Get all the Header Feilds
+        void getHeaderinfo(){           
+            Map<String,List<String>> headerFeilds = con.getHeaderFields();
+            for (Map.Entry<String, List<String>> entry : headerFeilds.entrySet()) {
+                String key = entry.getKey();
+                List<String> value = entry.getValue();
+                System.out.println(key+" : "+value);
+            }
+        }
+        void getHeaderinfo(String headername){
+        //Accessing individual header information//
+        System.out.println("Content Type : " + con.getHeaderField(headername));//c capital na ho chalega but isse type me hoa chate content-type
+        }
+        void getData(){
+        try {
+            //con.connect();
+           if(con.getResponseCode()==200){
+               Scanner sc = new Scanner(con.getInputStream(),"UTF-8");
+               String response="";
+               while(sc.hasNext()){
+                   response += sc.nextLine();
+               }
+               System.out.println(response);
+               //now parse string to json
+               JSONObject jsonobj = new JSONObject(response);
+               JSONArray jsonarr =jsonobj.getJSONArray("data");
+               for(int i = 0;i < jsonarr.length();i++){
+                   JSONObject jsonuser = jsonarr.getJSONObject(i);
+                   String name = jsonuser.getString("first_name") + "  "+ jsonuser.getString("last_name");
+                   System.out.println(name);
+               }
+           }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         }
         
-         //Accessing individual header information//
-        System.out.println("Content Type : " + connection.getRequestProperty("Content-Type"));//c capital na ho chalega but isse type me hoa chate content-type
-    }
-    
-    void getData()
-    {
-        if(connection != null)
-        {
-            try{
-                  connection.connect();  //abitk connection created but connect nhi kiya 
-                   getHeaderInformation();                 //connect ke bad hi header inf ayegi
-                   
-                   if(connection.getResponseCode() == 200)//resp code 200 means resp is proper , jaise 404 means page not found
-                   {
-                       Scanner scanner = new Scanner(connection.getInputStream(),"UTF-8");
-                       String response="";
-                       while(scanner.hasNext())
-                       {
-                           response += scanner.next();
-                       }
-                           System.out.println(response);
-                           
-                           //parse json
-                           JSONObject jsonObj=new JSONObject(response);
-                           JSONArray jsonArray=jsonObj.getJSONArray("data");//key string is case sensitive
-                           
-                           for(int i=0;i<jsonArray.length();i++)
-                           {
-                               JSONObject userObj=jsonArray.getJSONObject(i);
-                               String name=userObj.getString("first_name")+ " "
-                                       + userObj.getString("last_name");
-                               System.out.println(name);
-                           }
-                   }
-                   
-            }catch(IOException ex)
-            {
-                System.err.println("Exception : " + ex.getMessage());
-            } catch (JSONException ex) {
-                Logger.getLogger(ConsumeData.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }        
-    }
-    
     void postData()
     {
         if(connection!=null)
