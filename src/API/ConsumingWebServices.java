@@ -117,11 +117,11 @@ public class ConsumingWebServices {
 
     
     public static void main(String[] args) {
-        // TODO code application logic here
-        ConsumeData cd = new ConsumeData();
-        //cd.createConnection("GET");
+      consumedata cd = new consumedata();
+        cd.createconnection("https://reqres.in/api/users?per_page=10", "GET");
+        //cd.getHeaderinfo();
+        //cd.getHeaderinfo("Date");
         //cd.getData();
-          cd.createConnection("POST");//now i want to run post so instead of get use post
           cd.postData();
     }
     
