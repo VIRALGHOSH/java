@@ -5,6 +5,7 @@
  */
 package API;
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -69,28 +70,28 @@ class consumedata{
         
     void postData()
     {
-        if(connection!=null)
+        if(con!=null)
         {
             try
             {
-                connection.setDoOutput(true);//compulsary property for sending out information with the request
-                connection.connect();
+                con.setDoOutput(true);//compulsary property for sending out information with the request
+                con.connect();
                 
                 //send data
                 JSONObject userObj=new JSONObject();//json type ki ob send krni hai toa pna json objrect bnaya
                 userObj.put("name","Xavier");
                 userObj.put("job","Actor");
                 
-                OutputStream outStream=connection.getOutputStream();
+                OutputStream outStream=con.getOutputStream();
                 outStream.write(userObj.toString().getBytes());//convert json obj into bytes
                 outStream.close();
                 
             //    getHeaderInformation();
                 
                 //read response
-                if(connection.getResponseCode() == 201)
+                if(con.getResponseCode() == 201)
                    {
-                       Scanner scanner = new Scanner(connection.getInputStream(),"UTF-8");
+                       Scanner scanner = new Scanner(con.getInputStream(),"UTF-8");
                        String response="";
                        while(scanner.hasNext())
                        {
@@ -103,11 +104,9 @@ class consumedata{
                            System.out.println("ID : " + jsonObj.getString("id"));//hmne id aur date ko read kiya
                            System.out.println("DATE : " + jsonObj.getString("createdAt"));
                    }
-            }catch(IOException e)
+            }catch(Exception e)
             {
                 System.out.println("Exception : " + e.getMessage());
-            } catch (JSONException ex) {
-                Logger.getLogger(ConsumeData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
