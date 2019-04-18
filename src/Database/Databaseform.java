@@ -113,6 +113,11 @@ public class Databaseform extends javax.swing.JFrame {
 
         btn_insert.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         btn_insert.setText("Insert");
+        btn_insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_insertActionPerformed(evt);
+            }
+        });
 
         btn_update.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         btn_update.setText("Update");
@@ -183,6 +188,11 @@ public class Databaseform extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insertActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btn_insertActionPerformed
 
     /**
      * @param args the command line arguments

@@ -54,7 +54,17 @@ public class DatabaseHelper {
         return itemList;
     }
     private int insertRecord(ShoppingItem s){
-        return 0;
+        ArrayList<ShoppingItem> itemList = new ArrayList<>();
+         int status = 0;
+        try {
+            Statement cmd = con.createStatement();
+            String query = "insert into items values (NULL,'"+s.name+"','"+s.getPrice()+"',"+s.getCtrg_id()+")";
+            status= cmd.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+             System.out.println("Error in insert item "+e.getMessage());
+        }
+        return status;
     }
     private int updateRecord(ShoppingItem s){
         return 0;
