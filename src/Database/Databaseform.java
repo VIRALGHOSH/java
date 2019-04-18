@@ -5,19 +5,43 @@
  */
 package Database;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mca237
  */
 public class Databaseform extends javax.swing.JFrame {
-
+    
+    //Declare Global Variables
+    DatabaseHelper dbhelper;
+    ArrayList<ShoppingItem> shoppingList; 
+    
     /**
      * Creates new form Databaseform
      */
+    
     public Databaseform() {
         initComponents();
+        dbhelper = new DatabaseHelper();
+        shoppingList = dbhelper.ShoppingList;
+        updateTableDate();
+        //shoppingList = dbhelper.getShoppingItems();        //we can do this too but as we have already fetched the data, no need to call again
     }
-
+    public void updateTableDate(){
+        DefaultTableModel model = (DefaultTableModel) jtblitems.getModel();
+        
+        Object row[] = new Object[4];
+        for(int i = 0; i < shoppingList.size(); i++) {
+            ShoppingItem get = shoppingList.get(i);
+            row[0] = get.id;
+            row[1] = get.name;
+            row[2] = get.price;
+            row[3] = get.getCtrg_id();                    // we can also use geter setter method
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +52,7 @@ public class Databaseform extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblitems = new javax.swing.JTable();
         lbl_id = new javax.swing.JLabel();
         lbl_name = new javax.swing.JLabel();
         lbl_price = new javax.swing.JLabel();
@@ -43,7 +67,7 @@ public class Databaseform extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblitems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -59,14 +83,14 @@ public class Databaseform extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jtblitems.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(jtblitems);
+        jtblitems.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (jtblitems.getColumnModel().getColumnCount() > 0) {
+            jtblitems.getColumnModel().getColumn(0).setResizable(false);
+            jtblitems.getColumnModel().getColumn(1).setResizable(false);
+            jtblitems.getColumnModel().getColumn(2).setResizable(false);
+            jtblitems.getColumnModel().getColumn(3).setResizable(false);
         }
 
         lbl_id.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
@@ -157,8 +181,6 @@ public class Databaseform extends javax.swing.JFrame {
                 .addContainerGap(78, Short.MAX_VALUE))
         );
 
-        lbl_name.getAccessibleContext().setAccessibleName("NAME");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -195,6 +217,7 @@ public class Databaseform extends javax.swing.JFrame {
                 new Databaseform().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -202,7 +225,7 @@ public class Databaseform extends javax.swing.JFrame {
     private javax.swing.JButton btn_insert;
     private javax.swing.JButton btn_update;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtblitems;
     private javax.swing.JLabel lbl_ctrgid;
     private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_name;
