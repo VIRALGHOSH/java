@@ -53,7 +53,7 @@ public class DatabaseHelper {
         }
         return itemList;
     }
-    private int insertRecord(ShoppingItem s){
+    public int insertRecord(ShoppingItem s){
         ArrayList<ShoppingItem> itemList = new ArrayList<>();
          int status = 0;
         try {

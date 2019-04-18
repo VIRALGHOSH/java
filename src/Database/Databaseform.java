@@ -191,7 +191,12 @@ public class Databaseform extends javax.swing.JFrame {
 
     private void btn_insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_insertActionPerformed
         // TODO add your handling code here:
-        
+        ShoppingItem s = new ShoppingItem();
+        s.name = txt_name.getText();
+        s.price =Integer.parseInt(txt_price.getText());
+        s.ctrg_id =Integer.parseInt(txt_ctrgid.getText());
+       dbhelper.insertRecord(s);
+       updateTableDate();
     }//GEN-LAST:event_btn_insertActionPerformed
 
     /**
