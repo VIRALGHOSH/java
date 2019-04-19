@@ -52,7 +52,6 @@ class MyHandler extends DefaultHandler{
                     movieList.add(m);
            }
     }
-
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
        // super.characters(ch, start, length); //To change body of generated methods, choose Tools | Templates.
